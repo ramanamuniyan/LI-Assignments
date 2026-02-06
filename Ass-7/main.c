@@ -2,13 +2,13 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-int main(int argv,char *argv[])
+int main(int argc,char *argv[])
 {
 
 	if(argc < 2)
 	{
 	
-	perror("Usage %s args\n",argv[0]); // error message
+	printf("Usage %s args\n",argv[0]); // error message
 	
 	return 1;
 	}
@@ -38,7 +38,8 @@ int main(int argv,char *argv[])
 	 // child process 
 	 
 	 printf("The child process id %d\n",getpid()); //printing the child process
-	execvp(argv[1],argv[1]+1);//execute the cmd inside the child process
+	execvp(argv[1],argv+1);//execute the cmd inside the child process
+	
 	
 	
 	
