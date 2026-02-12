@@ -4,6 +4,9 @@
 #include <ctype.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 
 int main()
 
@@ -23,6 +26,16 @@ int main()
 	
 	read(pipe_fd[0],str2,sizeof(str2));  // reading the data from the pipe of child using the read
 	
+	//creating the fifo file 
+	
+	
+	if(mkfifo("myfifo",0666) == -1)
+	perror(" myfifo  error ");
+	
+	else
+	printf("FIFO created\n");
+	
+	
 	
 	int i=0;
 	while(str2[i])
@@ -35,7 +48,26 @@ int main()
 	}
 
 
-	printf("parent print :%s\n",str2); 
+	// write fifo
+	
+	
+	int fd = open("myfifo", O_RDWR);
+	if(fd < 0)
+	{
+   	 perror("open error");
+    	return 1;
+	}
+	
+	printf("FIFO opened\n");
+	
+	
+	write(fd,str2,strlen(str2));
+	
+	sleep(3);
+	close(fd);
+	
+	
+	//printf("parent print :%s\n",str2); 
 	
 	//create the shm
 	
@@ -43,7 +75,14 @@ int main()
 	
 	void *ptr=shmat(shmid,NULL,0);  //attatch the shmid  process 
 	
-	strcpy(ptr,str2);  // copy because the mem shm is buff .
+	
+	sleep(2);
+	
+	strcpy(str2,ptr);  // copy because the mem shm is buff .
+	
+	
+	
+	printf("reversed string :%s\n",str2); 
 	
 	shmdt(shmid);
 	
@@ -64,7 +103,7 @@ int main()
 	close(pipe_fd[0]);
 	
 	
-	
+	//while(1);
 	
 	
 	}
