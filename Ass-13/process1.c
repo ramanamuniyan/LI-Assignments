@@ -1,3 +1,5 @@
+//Ass 13
+
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
@@ -42,7 +44,7 @@ int main()
 	{
 	
 	if(isalpha(str2[i]))
-	str2[i]= toupper(str2[i]); //  to upper case
+	 toupper(str2[i]); //  to upper case
 	i++;
 	
 	}
@@ -87,7 +89,7 @@ int main()
 	shmdt(shmid);
 	
 	
-	//shmctl(shmid,IPC_RMID,NULL);
+	shmctl(shmid,IPC_RMID,NULL);
 		
 		
 	}
